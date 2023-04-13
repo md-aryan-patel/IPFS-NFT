@@ -3,22 +3,20 @@ pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract MyToken is ERC721, ERC721URIStorage, Ownable {
-    uint256 private _tokenIdCounter = 1;
-
     constructor() ERC721("MyToken", "MTK") {}
 
     function _baseURI() internal pure override returns (string memory) {
         return "ipfs://QmVD3EqwadDqD2NPSedegLLb1DHQHyidfns7CtgumuxnYR/";
     }
 
-    function safeMint(string memory uri) public onlyOwner {
-        uint256 tokenId = _tokenIdCounter;
-        _tokenIdCounter++;
+    function safeMint(uint256 uri) public onlyOwner {
+        uint256 tokenId = uint(uri);
         _safeMint(msg.sender, tokenId);
-        _setTokenURI(tokenId, uri);
+        _setTokenURI(tokenId, Strings.toString(uri));
     }
 
     function _burn(

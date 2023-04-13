@@ -5,6 +5,7 @@ const ipfs = create("http://127.0.0.1:5001");
 
 const postData = async (_file, _id) => {
   let result;
+
   try {
     result = await ipfs.files.write(`/metadata/${_id}`, JSON.stringify(_file), {
       create: true,

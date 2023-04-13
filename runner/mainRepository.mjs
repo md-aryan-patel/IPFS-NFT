@@ -1,7 +1,7 @@
-import "dotenv/config";
-import abi from "../artifacts/contracts/MyToken.sol/MyToken.json" assert { type: "json" };
 import { ethers } from "ethers";
 import ipfs from "./ipfsRepository.mjs";
+import abi from "../artifacts/contracts/MyToken.sol/MyToken.json" assert { type: "json" };
+import "dotenv/config";
 
 const url = process.env.SEPOLIA_INFURA_ENDPOINT;
 
@@ -9,14 +9,14 @@ const provider = new ethers.providers.JsonRpcProvider(url);
 const wallet = new ethers.Wallet(process.env.private_key, provider);
 const contract = new ethers.Contract(process.env.TOKEN, abi.abi, provider);
 
-contract.on("Transfer", (to, amount, from) => {
-  console.log("to: ", to, "\namount: ", amount, "\nfrom: ", from);
+contract.on("Transfer", (from, to, amount) => {
+  console.log("from: ", from, "\nto: ", to, "\namount: ", amount);
 });
 
-const mintNft = async (_tokenId) => {
-  if ((await ipfs.checkIfIdExist(_tokenId)) != 0) {
+const mintNft = async (_uid) => {
+  if ((await ipfs.checkIfIdExist(_uid)) != 0) {
     try {
-      await contract.connect(wallet).safeMint(_tokenId.toString());
+      await contract.connect(wallet).safeMint(_uid.toString());
       return true;
     } catch (err) {
       console.error(err);
@@ -39,18 +39,15 @@ const addMetadata = async (_name, _description, _attribute, ID, imageId) => {
 };
 
 const getTokenURI = async (_tokenID) => {
-  return await contract.tokenURI(_tokenID);
+  const result = await contract.tokenURI(_tokenID);
+  return result;
 };
 
 const getDetail = async () => {
-  console.log(await contract.name());
+  const result = await contract.name();
+  return result;
 };
 
-const main = async () => {
-  addMetadata("The pale city", "No one lives there", [], 1905, 6);
-  mintNft(1900);
-};
+getDetail();
 
-main();
-
-export default { getTokenURI, getDetail };
+export default { getTokenURI, getDetail, mintNft };
