@@ -7,7 +7,7 @@ const postData = async (_file, _id) => {
   let result;
 
   try {
-    result = await ipfs.files.write(`/metadata/${_id}`, JSON.stringify(_file), {
+    result = await ipfs.files.write(`/stray/${_id}`, JSON.stringify(_file), {
       create: true,
     });
   } catch (err) {

@@ -7,10 +7,10 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract MyToken is ERC721, ERC721URIStorage, Ownable {
-    constructor() ERC721("MyToken", "MTK") {}
+    constructor() ERC721("Stray", "STR") {}
 
     function _baseURI() internal pure override returns (string memory) {
-        return "ipfs://QmVD3EqwadDqD2NPSedegLLb1DHQHyidfns7CtgumuxnYR/";
+        return "ipfs://QmS6vS2waYh4xxeEMUHp1xK11nVuWrPopxmNFtCAvujzUt/";
     }
 
     function safeMint(uint256 uri) public onlyOwner {

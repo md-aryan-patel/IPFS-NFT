@@ -27,11 +27,12 @@ const mintNft = async (_uid) => {
 
 const addMetadata = async (_name, _description, _attribute, ID, imageId) => {
   const cid = await ipfs.getImageCID(imageId);
-  const img = process.env.IPFS_BASE + cid;
+  const img = "ipfs://" + cid.toString();
+  const name = `${_name} #${ID}`;
   const object = {
-    name: _name,
+    name: name,
     description: _description,
-    image: img.toString(),
+    image: img,
     attributes: _attribute,
   };
   await ipfs.postData(object, ID);
@@ -47,7 +48,5 @@ const getDetail = async () => {
   const result = await contract.name();
   return result;
 };
-
-getDetail();
 
 export default { getTokenURI, getDetail, mintNft };
