@@ -1,5 +1,5 @@
 import Express from "express";
-import route from "./routes.mjs";
+import route from "../routes/routes.mjs";
 import cors from "cors";
 import "dotenv/config";
 

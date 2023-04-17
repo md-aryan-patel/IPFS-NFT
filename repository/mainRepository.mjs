@@ -1,13 +1,8 @@
-import { ethers } from "ethers";
+import di from "../di/mainModule.mjs";
 import ipfs from "./ipfsRepository.mjs";
-import abi from "../artifacts/contracts/MyToken.sol/MyToken.json" assert { type: "json" };
-import "dotenv/config";
 
-const url = process.env.SEPOLIA_INFURA_ENDPOINT;
-
-const provider = new ethers.providers.JsonRpcProvider(url);
-const wallet = new ethers.Wallet(process.env.private_key, provider);
-const contract = new ethers.Contract(process.env.TOKEN, abi.abi, provider);
+const wallet = di.Wallet.getWallet();
+const contract = di.Token.getContract();
 
 contract.on("Transfer", (from, to, amount) => {
   console.log("from: ", from, "\nto: ", to, "\namount: ", amount);
@@ -49,4 +44,4 @@ const getDetail = async () => {
   return result;
 };
 
-export default { getTokenURI, getDetail, mintNft };
+export default { getTokenURI, getDetail, mintNft, addMetadata };
